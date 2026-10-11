@@ -1,0 +1,345 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>GymDesk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Layout: sticky header, hero with dashboard preview, feature grid, deep-dive bands, WhatsApp contact block. Dark-first by choice, matching the app's dark surface theme. */
+:root{
+  --bg:#0B0D10; --surface:#11151B; --card:#161B22; --line:#232933; --line-soft:#1B2028;
+  --fg:#F2F4F7; --fg-2:#D5DAE1; --muted:#9AA4B2; --faint:#7B8696;
+  --accent:#FF5B1F; --accent-ink:#0B0D10; --accent-wash:#1D130D; --accent-line:#3A2418;
+  --wa:#25D366; --wa-ink:#06260F;
+  --font:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:16px;line-height:1.5;margin:0;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1200px;margin:0 auto;padding-inline:20px}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.h2{font-size:clamp(30px,4.4vw,46px);line-height:1.08;letter-spacing:-.03em;font-weight:800}
+.lead{font-size:18px;line-height:1.6;color:var(--muted);max-width:60ch}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font:inherit;font-weight:700;font-size:16px;padding:14px 24px;border-radius:12px;border:1px solid transparent;cursor:pointer;min-height:48px}
+.btn-primary{background:var(--accent);color:var(--accent-ink)}
+.btn-ghost{border-color:#2A313B;color:var(--fg);font-weight:600}
+.btn-wa{background:var(--wa);color:var(--wa-ink)}
+.btn:hover{filter:brightness(1.08)}
+section{border-top:1px solid var(--line-soft)}
+.pad{padding-block:88px}
+.band{background:#0F1217}
+.split{display:flex;flex-wrap:wrap;gap:56px;align-items:center}
+.split>*{flex:1 1 420px;min-width:0}
+.stack{display:flex;flex-direction:column;gap:18px}
+.ticks{display:flex;flex-direction:column;gap:12px;margin-top:6px;padding:0;list-style:none}
+.ticks li{display:flex;gap:12px;align-items:flex-start;color:var(--fg-2)}
+.ticks svg{flex:none;margin-top:3px;width:20px;height:20px;fill:none;stroke:var(--accent);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+
+/* header */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(11,13,16,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line-soft)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:-.02em}
+.logo i{width:32px;height:32px;border-radius:8px;background:var(--accent);display:grid;place-items:center}
+.logo svg{width:18px;height:18px;fill:none;stroke:var(--accent-ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+nav{display:flex;gap:28px;font-size:15px;font-weight:500;color:var(--muted)}
+nav a:hover{color:var(--fg)}
+.bar .btn{padding:10px 18px;min-height:44px;font-size:15px}
+@media (max-width:860px){nav{display:none}}
+
+/* hero */
+.hero{border-top:0;background:radial-gradient(900px 420px at 85% 0%,#1A1410 0%,var(--bg) 70%)}
+.hero .split{padding-block:80px 72px}
+.hero h1{font-size:clamp(38px,6vw,68px);line-height:1.02;letter-spacing:-.035em;font-weight:800}
+.pill{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);border:1px solid #2A313B;border-radius:999px;padding:7px 14px;align-self:flex-start}
+.cta-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:8px}
+.mock{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.mock-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;font-size:12px;color:var(--faint)}
+.dots{display:flex;gap:6px}.dots span{width:10px;height:10px;border-radius:50%;background:#2A313B}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.tile small{display:block;font-size:12px;color:var(--muted);font-weight:500}
+.tile b{display:block;font-size:26px;letter-spacing:-.02em;margin-top:6px;font-variant-numeric:tabular-nums}
+.chart{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-top:12px}
+.chart small{font-size:12px;color:var(--muted);font-weight:500}
+.bars{display:flex;align-items:flex-end;gap:10px;height:110px;margin-top:12px}
+.bars div{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;font-size:11px;color:var(--faint)}
+.bars i{display:block;width:100%;border-radius:6px 6px 2px 2px;background:var(--accent)}
+
+/* features */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px;display:flex;flex-direction:column;gap:12px}
+.card .ic{width:44px;height:44px;border-radius:12px;background:#1C1612;border:1px solid var(--accent-line);display:grid;place-items:center;color:var(--accent)}
+.card .ic svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.card h3{font-size:19px;font-weight:700;letter-spacing:-.01em}
+.card p{font-size:15px;line-height:1.6;color:var(--muted)}
+
+/* lifecycle */
+.steps{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:12px}
+.steps h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:4px}
+.step{display:flex;gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.step em{font-style:normal;flex:none;width:30px;height:30px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-weight:800;font-size:14px;display:grid;place-items:center}
+.step b{display:block;font-size:16px}.step span{display:block;font-size:14px;color:var(--muted);line-height:1.45;margin-top:2px}
+
+/* roles */
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px}
+.stat b{display:block;font-size:clamp(34px,5vw,52px);font-weight:800;letter-spacing:-.03em;color:var(--accent);line-height:1}
+.stat span{display:block;font-size:15px;color:var(--muted);margin-top:10px;line-height:1.45}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.chips span{font-size:14px;font-weight:500;color:var(--fg-2);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:8px 14px}
+
+/* audit */
+.log{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:16px}
+.log-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center}
+.log-head b{font-size:16px}.log-head span{font-size:12px;color:var(--faint)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:13px;color:var(--muted)}
+.diff{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:14px}
+.diff b{min-width:110px;font-weight:600}
+.diff code{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.diff code.new{color:var(--fg)}
+.diff u{text-decoration:none;color:var(--accent)}
+
+/* stack */
+.tech{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.tech div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+.tech b{font-size:17px}.tech span{display:block;font-size:14px;color:var(--muted);margin-top:6px;line-height:1.5}
+
+/* contact */
+.contact{padding-block:0 88px;border-top:0}
+.contact-box{background:linear-gradient(135deg,var(--accent-wash) 0%,var(--surface) 70%);border:1px solid var(--accent-line);border-radius:28px;padding:48px 28px;display:flex;flex-wrap:wrap;gap:40px}
+.contact-box>*{flex:1 1 380px;min-width:0}
+.num{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:6px}
+.num code{font-family:var(--mono);font-size:18px;font-weight:600;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;user-select:all;overflow-wrap:anywhere}
+.num button{font:inherit;font-size:14px;font-weight:600;color:var(--fg);background:transparent;border:1px solid #2A313B;border-radius:10px;padding:10px 14px;cursor:pointer;min-height:44px}
+form{display:flex;flex-direction:column;gap:14px}
+label{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;color:var(--fg-2)}
+input,textarea{font:inherit;font-size:16px;color:var(--fg);background:var(--bg);border:1px solid #2A313B;border-radius:10px;padding:12px 14px;width:100%}
+textarea{min-height:110px;resize:vertical}
+input::placeholder,textarea::placeholder{color:var(--faint)}
+.note{font-size:13px;color:var(--faint);line-height:1.5}
+
+footer{border-top:1px solid var(--line-soft);font-size:14px;color:var(--faint)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-block:28px}
+
+/* floating whatsapp */
+.fab{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;background:var(--wa);color:var(--wa-ink);font-weight:700;font-size:15px;border-radius:999px;padding:13px 20px 13px 16px;display:flex;align-items:center;gap:10px;box-shadow:0 10px 30px rgba(0,0,0,.5);min-height:48px}
+.fab svg{width:22px;height:22px;fill:currentColor}
+@media (max-width:520px){.fab span{display:none}.fab{padding:13px}}
+</style>
+
+<header>
+  <div class="wrap bar">
+    <a href="#top" class="logo"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7v10M18 7v10M3 10v4M21 10v4M6 12h12"/></svg></i>GymDesk</a>
+    <nav aria-label="Main">
+      <a href="#features">Features</a><a href="#subscriptions">Subscriptions</a><a href="#roles">Roles</a><a href="#audit">Audit trail</a><a href="#stack">Tech stack</a>
+    </nav>
+    <a class="btn btn-wa js-wa" href="#contact" target="_blank" rel="noopener">WhatsApp us</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap split">
+      <div class="stack" style="gap:24px">
+        <span class="pill">Gym management platform</span>
+        <h1>Run your whole gym from one dashboard.</h1>
+        <p class="lead">Members, subscriptions, payments, attendance, trainers and equipment, with role-based access and a full audit trail, so front desk, managers and owners each see exactly what they should.</p>
+        <div class="cta-row">
+          <a class="btn btn-wa js-wa" href="#contact" target="_blank" rel="noopener">Chat on WhatsApp</a>
+          <a class="btn btn-ghost" href="#features">Explore features</a>
+        </div>
+      </div>
+      <div class="mock" aria-label="Dashboard preview">
+        <div class="mock-top"><div class="dots" aria-hidden="true"><span></span><span></span><span></span></div><span>Illustrative preview · sample data</span></div>
+        <div class="tiles">
+          <div class="tile"><small>Active members</small><b>248</b></div>
+          <div class="tile"><small>Revenue this month</small><b>$12.4k</b></div>
+          <div class="tile"><small>Outstanding</small><b>$1.8k</b></div>
+          <div class="tile"><small>Expiring soon</small><b>17</b></div>
+        </div>
+        <div class="chart"><small>Attendance this week</small>
+          <div class="bars" id="bars"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap pad stack" style="gap:48px">
+      <div class="stack" style="gap:14px;max-width:640px">
+        <span class="eyebrow">Everything in one place</span>
+        <h2 class="h2">Built for how a gym actually runs.</h2>
+        <p class="lead">From the first sign-up to the last renewal, every desk task has a home.</p>
+      </div>
+      <div class="grid" id="features-grid"></div>
+    </div>
+  </section>
+
+  <section id="subscriptions" class="band">
+    <div class="wrap pad split">
+      <div class="stack">
+        <span class="eyebrow">Subscriptions &amp; payments</span>
+        <h2 class="h2">Balances that stay honest.</h2>
+        <p class="lead">Take full or partial payments, freeze a membership with a reason and an auto-unfreeze date, and renew before expiry. The service layer allows one live subscription per member, so duplicates never slip in.</p>
+        <ul class="ticks" id="rules"></ul>
+      </div>
+      <div class="steps">
+        <h3>Subscription lifecycle</h3>
+        <div class="step"><em>1</em><div><b>Subscribe</b><span>Pick a plan, set the start date and take the first payment.</span></div></div>
+        <div class="step"><em>2</em><div><b>Pay the balance</b><span>Record partial payments until the balance reaches zero.</span></div></div>
+        <div class="step"><em>3</em><div><b>Freeze if needed</b><span>Pause with a reason; it unfreezes on the date you set.</span></div></div>
+        <div class="step"><em>4</em><div><b>Renew</b><span>Renew before the subscription expires.</span></div></div>
+        <div class="step"><em>5</em><div><b>Settle on expiry</b><span>A job finalises balances when the subscription ends.</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="roles">
+    <div class="wrap pad split">
+      <div class="stats">
+        <div class="stat"><b>5</b><span>built-in roles, plus your own custom roles</span></div>
+        <div class="stat"><b>~50</b><span>granular permissions across the system</span></div>
+        <div class="stat"><b>2</b><span>roles can read the audit trail: Super Admin and Admin</span></div>
+        <div class="stat"><b>0</b><span>cookies needed, with token-based auth for SPAs</span></div>
+      </div>
+      <div class="stack">
+        <span class="eyebrow">Roles &amp; permissions</span>
+        <h2 class="h2">The right access for every staff member.</h2>
+        <p class="lead">Token-based API authentication with Laravel Sanctum and role-based access control with Spatie Permission. Navigation and API routes are both gated, so people only see and call what their role allows.</p>
+        <div class="chips"><span>View members</span><span>Create payments</span><span>Freeze subscriptions</span><span>Permission-gated navigation</span><span>Protected API routes</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="audit" class="band">
+    <div class="wrap pad split">
+      <div class="log">
+        <div class="log-head"><b>Subscription updated</b><span>Illustrative entry</span></div>
+        <div class="meta"><span>Actor · staff user</span><span>Method · PUT</span><span>IP · recorded</span><span>User agent · recorded</span></div>
+        <div class="diff"><b>status</b><code>active</code><u>→</u><code class="new">frozen</code></div>
+        <div class="diff"><b>freeze_reason</b><code>null</code><u>→</u><code class="new">travelling</code></div>
+        <div class="diff"><b>password</b><code>[redacted]</code><u>→</u><code class="new">[redacted]</code></div>
+      </div>
+      <div class="stack">
+        <span class="eyebrow">Audit trail</span>
+        <h2 class="h2">Know who changed what, and when.</h2>
+        <p class="lead">Every create, update, delete, restore and status change is logged append-only, with before and after values per field. Sensitive values are redacted, and only Super Admin and Admin roles can read the trail.</p>
+        <ul class="ticks" id="audit-points"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="stack">
+    <div class="wrap pad stack" style="gap:36px">
+      <div class="stack" style="gap:14px;max-width:640px">
+        <span class="eyebrow">Under the hood</span>
+        <h2 class="h2">A modern, SPA-friendly stack.</h2>
+      </div>
+      <div class="tech">
+        <div><b>Laravel Sanctum</b><span>Token-based API authentication, no cookies.</span></div>
+        <div><b>Spatie Permission</b><span>Roles and about 50 granular permissions.</span></div>
+        <div><b>React + Recharts</b><span>Lazy-loaded routes and live charts.</span></div>
+        <div><b>Tailwind CSS 4</b><span>Responsive UI with a custom gym brand palette.</span></div>
+        <div><b>html5-qrcode</b><span>QR and barcode scanning for attendance.</span></div>
+        <div><b>Inter</b><span>Dark surface theme tokens and clean type.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="wrap">
+      <div class="contact-box">
+        <div class="stack">
+          <span class="eyebrow">Talk to us</span>
+          <h2 class="h2">Message us on WhatsApp.</h2>
+          <p class="lead">Tell us about your gym and we will reply with a walkthrough of members, subscriptions, attendance and the audit trail.</p>
+          <div><a class="btn btn-wa js-wa" href="#contact" target="_blank" rel="noopener">Chat on WhatsApp</a></div>
+        </div>
+        <form id="wa-form" autocomplete="off">
+          <label for="f-name">Your name<input id="f-name" type="text" placeholder="Your name"></label>
+          <label for="f-gym">Gym name and city<input id="f-gym" type="text" placeholder="Gym name, city"></label>
+          <label for="f-msg">What do you want to see?<textarea id="f-msg" placeholder="Members, payments, attendance..."></textarea></label>
+          <a class="btn btn-wa js-wa" id="f-send" href="#contact" target="_blank" rel="noopener">Send on WhatsApp</a>
+          <p class="note">This opens WhatsApp with your message filled in. Nothing is sent until you press send there.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap"><span>© 2026 GymDesk. All rights reserved.</span><span>[YOUR ADDRESS / SOCIAL LINKS]</span></div></footer>
+
+<a class="fab js-wa" href="#contact" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.2 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8 0-1.3.7-2 1-2.2.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6c-.2.2-.3.4-.1.7.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.7-.1l.9-1c.2-.3.4-.2.7-.1l2 .9c.3.2.5.2.6.3.1.2.1.8-.1 1.4z"/></svg>
+  <span>WhatsApp</span>
+</a>
+
+<script>
+/* Set your WhatsApp number here, digits only with country code, e.g. "9779800000000". */
+var WA_NUMBER = "9779817448062";
+
+var features = [
+  ["Member management","Full profiles with photo, address, emergency contact and medical notes. Track body measurements over time and see attendance, subscriptions and payments in one place.","M16 20v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1M9.5 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M21 20v-1a4 4 0 0 0-3-3.87M16 4.13a3.5 3.5 0 0 1 0 6.74"],
+  ["Subscriptions","Plan-based subscriptions with partial payments, freeze and unfreeze, renewals, and a settlement job that finalises balances on expiry.","M21 12a9 9 0 1 1-3-6.7M21 4v5h-5"],
+  ["Payments","Record full or partial payments with methods, reference numbers and generated invoice numbers. Filter and export payment history.","M3 6h18v12H3zM3 10h18M7 15h3"],
+  ["Attendance","Daily check-in and check-out by QR or barcode scan, or manual entry. Reports by date range and member.","M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2"],
+  ["Membership plans","Define plans with name, duration, price, validity and description. Plans drive subscription pricing.","M12 3l9 5-9 5-9-5 9-5zM3 13l9 5 9-5"],
+  ["Trainers","Keep specialisations, contact details and joining dates. Assign trainers and workout plans to members.","M12 14a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM8.5 13.5L7 21l5-3 5 3-1.5-7.5"],
+  ["Equipment","Track purchase date, quantity, condition and status, with a maintenance log of issue, action and cost per item.","M6 7v10M18 7v10M3 10v4M21 10v4M6 12h12"],
+  ["Notice board","Publish notices with priority and expiry, send them to members, and see read and unread status.","M18 16v-5a6 6 0 1 0-12 0v5l-2 2h16l-2-2zM10 21h4"],
+  ["Membership card","A QR-coded digital card for every member, ready to print, with a repair command for broken card access links.","M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h3v3h-3zM20 14v7M14 20h3"],
+  ["Dashboard & analytics","Revenue, outstanding balances, member counts and expiring subscriptions at a glance, with attendance and revenue charts.","M4 20V10M10 20V4M16 20v-7M22 20H2"],
+  ["Roles & permissions","Create staff accounts, assign one or many roles, and tune a per-permission matrix for each role.","M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"],
+  ["Audit trail","An append-only log of every change, with actor, IP address and before and after values.","M6 3h9l4 4v14H6zM14 3v5h5M9 13h7M9 17h7"]
+];
+var tick = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l4 4 10-10"/></svg>';
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+document.getElementById("features-grid").innerHTML = features.map(function(f){
+  return '<div class="card"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+f[2]+'"/></svg></div><h3>'+esc(f[0])+'</h3><p>'+esc(f[1])+'</p></div>';
+}).join("");
+document.getElementById("rules").innerHTML = [
+  "Partial payments with a live balance on every subscription",
+  "Freeze with a reason and a scheduled auto-unfreeze date",
+  "Renew expiring subscriptions in a click",
+  "One live subscription per member, enforced by the service layer"
+].map(function(t){return "<li>"+tick+"<span>"+t+"</span></li>"}).join("");
+document.getElementById("audit-points").innerHTML = [
+  "Records actor, IP address, user agent, request URL and HTTP method",
+  "Before and after values for every changed field",
+  "Changes about a member are findable by that member",
+  "Filter by date, user, member, module, action, record ID, IP or free text"
+].map(function(t){return "<li>"+tick+"<span>"+t+"</span></li>"}).join("");
+document.getElementById("bars").innerHTML = [["Mon",48],["Tue",62],["Wed",55],["Thu",74],["Fri",68],["Sat",92],["Sun",60]].map(function(b){
+  return '<div><i style="height:'+b[1]+'%"></i>'+b[0]+'</div>';
+}).join("");
+
+/* WhatsApp wiring */
+var digits = String(WA_NUMBER).replace(/\D/g,"");
+var base = digits ? "https://wa.me/"+digits : "https://wa.me/";
+function waLink(text){ return base + (text ? "?text="+encodeURIComponent(text) : ""); }
+var generic = "Hi, I would like to know more about GymDesk.";
+document.querySelectorAll(".js-wa").forEach(function(a){ if(a.id!=="f-send") a.setAttribute("href", waLink(generic)); });
+
+var send = document.getElementById("f-send");
+function updateSend(){
+  var n = document.getElementById("f-name").value.trim();
+  var g = document.getElementById("f-gym").value.trim();
+  var m = document.getElementById("f-msg").value.trim();
+  var t = "Hi, I would like to know more about GymDesk.";
+  if(n) t += "\nName: "+n;
+  if(g) t += "\nGym: "+g;
+  if(m) t += "\n"+m;
+  send.setAttribute("href", waLink(t));
+}
+["f-name","f-gym","f-msg"].forEach(function(id){ document.getElementById(id).addEventListener("input", updateSend); });
+document.getElementById("wa-form").addEventListener("submit", function(e){ e.preventDefault(); });
+updateSend();
+
+</script>
+
+</body></html>
