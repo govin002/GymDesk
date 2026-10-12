@@ -1,4 +1,8 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GymDesk</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -46,10 +50,26 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rg
 .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:-.02em}
 .logo i{width:32px;height:32px;border-radius:8px;background:var(--accent);display:grid;place-items:center}
 .logo svg{width:18px;height:18px;fill:none;stroke:var(--accent-ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
-nav{display:flex;gap:28px;font-size:15px;font-weight:500;color:var(--muted)}
-nav a:hover{color:var(--fg)}
+[hidden]{display:none!important}
+.dnav{display:flex;gap:26px;font-size:15px;font-weight:500;color:var(--muted)}
+.dnav a{padding-block:6px;border-bottom:2px solid transparent}
+.dnav a:hover{color:var(--fg)}
+.dnav a.active{color:var(--fg);border-bottom-color:var(--accent)}
+.bar-end{display:flex;align-items:center;gap:10px}
 .bar .btn{padding:10px 18px;min-height:44px;font-size:15px}
-@media (max-width:860px){nav{display:none}}
+.burger{display:none;width:44px;height:44px;place-items:center;border:1px solid #2A313B;border-radius:10px;background:transparent;color:var(--fg);cursor:pointer;padding:0}
+.burger svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.burger .x{display:none}
+.burger[aria-expanded="true"] .b{display:none}
+.burger[aria-expanded="true"] .x{display:inline}
+.mnav{border-top:1px solid var(--line-soft);background:var(--bg);max-height:calc(100vh - 72px);overflow-y:auto}
+.mnav-in{display:flex;flex-direction:column;gap:4px;padding-block:12px 20px}
+.mnav-in a:not(.btn){font-size:17px;font-weight:600;color:var(--fg-2);padding:14px 12px;border-radius:10px;border-left:3px solid transparent}
+.mnav-in a.active:not(.btn){color:var(--fg);background:var(--card);border-left-color:var(--accent)}
+.mnav-in .btn{margin-top:10px}
+@media (max-width:900px){.dnav{display:none}.burger{display:grid}}
+@media (max-width:520px){.hdr-wa{display:none}}
+@media (min-width:901px){.mnav{display:none!important}}
 
 /* hero */
 .hero{border-top:0;background:radial-gradient(900px 420px at 85% 0%,#1A1410 0%,var(--bg) 70%)}
@@ -135,10 +155,21 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
 <header>
   <div class="wrap bar">
     <a href="#top" class="logo"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7v10M18 7v10M3 10v4M21 10v4M6 12h12"/></svg></i>GymDesk</a>
-    <nav aria-label="Main">
-      <a href="#features">Features</a><a href="#subscriptions">Subscriptions</a><a href="#roles">Roles</a><a href="#audit">Audit trail</a><a href="#stack">Tech stack</a>
+    <nav aria-label="Main" class="dnav">
+      <a href="#features">Features</a><a href="#subscriptions">Subscriptions</a><a href="#roles">Roles</a><a href="#audit">Audit trail</a><a href="#stack">Tech stack</a><a href="#contact">Contact</a>
     </nav>
-    <a class="btn btn-wa js-wa" href="#contact" target="_blank" rel="noopener">WhatsApp us</a>
+    <div class="bar-end">
+      <a class="btn btn-wa hdr-wa js-wa" href="#contact" target="_blank" rel="noopener">WhatsApp us</a>
+      <button type="button" class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mnav">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path class="b" d="M4 7h16M4 12h16M4 17h16"/><path class="x" d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="mnav" id="mnav" hidden>
+    <nav aria-label="Mobile" class="wrap mnav-in">
+      <a href="#features">Features</a><a href="#subscriptions">Subscriptions</a><a href="#roles">Roles</a><a href="#audit">Audit trail</a><a href="#stack">Tech stack</a><a href="#contact">Contact</a>
+      <a class="btn btn-wa js-wa" href="#contact" target="_blank" rel="noopener">Chat on WhatsApp</a>
+    </nav>
   </div>
 </header>
 
@@ -340,6 +371,43 @@ function updateSend(){
 document.getElementById("wa-form").addEventListener("submit", function(e){ e.preventDefault(); });
 updateSend();
 
+/* Mobile menu */
+var burger = document.getElementById("burger");
+var mnav = document.getElementById("mnav");
+function setMenu(open){
+  mnav.hidden = !open;
+  burger.setAttribute("aria-expanded", open ? "true" : "false");
+  burger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+}
+burger.addEventListener("click", function(){ setMenu(mnav.hidden); });
+mnav.addEventListener("click", function(e){ if(e.target.closest("a")) setMenu(false); });
+document.addEventListener("keydown", function(e){ if(e.key === "Escape" && !mnav.hidden){ setMenu(false); burger.focus(); } });
+window.addEventListener("resize", function(){ if(window.innerWidth > 900) setMenu(false); });
+
+/* Highlight the section being viewed */
+var ids = ["features","subscriptions","roles","audit","stack","contact"];
+var links = document.querySelectorAll('.dnav a, .mnav-in a:not(.btn)');
+function spy(){
+  var current = "";
+  var atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+  if(atBottom){ current = "contact"; }
+  else {
+    ids.forEach(function(id){
+      var el = document.getElementById(id);
+      if(el && el.getBoundingClientRect().top <= 140) current = id;
+    });
+  }
+  links.forEach(function(a){
+    var on = a.getAttribute("href") === "#"+current;
+    a.classList.toggle("active", on);
+    if(on) a.setAttribute("aria-current","true"); else a.removeAttribute("aria-current");
+  });
+}
+window.addEventListener("scroll", spy, {passive:true});
+window.addEventListener("resize", spy);
+spy();
+
 </script>
 
-</body></html>
+</body>
+</html>
