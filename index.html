@@ -63,10 +63,13 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rg
 .burger[aria-expanded="true"] .b{display:none}
 .burger[aria-expanded="true"] .x{display:inline}
 .mnav{border-top:1px solid var(--line-soft);background:var(--bg);max-height:calc(100vh - 72px);overflow-y:auto}
-.mnav-in{display:flex;flex-direction:column;gap:4px;padding-block:12px 20px}
-.mnav-in a:not(.btn){font-size:17px;font-weight:600;color:var(--fg-2);padding:14px 12px;border-radius:10px;border-left:3px solid transparent}
-.mnav-in a.active:not(.btn){color:var(--fg);background:var(--card);border-left-color:var(--accent)}
-.mnav-in .btn{margin-top:10px}
+.mnav-in{display:flex;flex-direction:column;padding-block:6px 10px}
+.mnav-in a{font-size:14px;font-weight:500;color:var(--muted);padding:12px 4px;border-bottom:1px solid var(--line-soft)}
+.mnav-in a{transition:color .15s,background-color .15s,padding-left .15s}
+.mnav-in a:hover,.mnav-in a:focus-visible,.mnav-in a:active{color:var(--fg);background:var(--card);padding-left:12px;opacity:1}
+.mnav-in a:last-child{border-bottom:0}
+@media (prefers-reduced-motion:reduce){.mnav-in a{transition:none}}
+.mnav-in a.active,.mnav-in a.active:hover{color:var(--accent)}
 @media (max-width:900px){.dnav{display:none}.burger{display:grid}}
 @media (max-width:520px){.hdr-wa{display:none}}
 @media (min-width:901px){.mnav{display:none!important}}
@@ -168,7 +171,6 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
   <div class="mnav" id="mnav" hidden>
     <nav aria-label="Mobile" class="wrap mnav-in">
       <a href="#features">Features</a><a href="#subscriptions">Subscriptions</a><a href="#roles">Roles</a><a href="#audit">Audit trail</a><a href="#stack">Tech stack</a><a href="#contact">Contact</a>
-      <a class="btn btn-wa js-wa" href="#contact" target="_blank" rel="noopener">Chat on WhatsApp</a>
     </nav>
   </div>
 </header>
@@ -386,7 +388,7 @@ window.addEventListener("resize", function(){ if(window.innerWidth > 900) setMen
 
 /* Highlight the section being viewed */
 var ids = ["features","subscriptions","roles","audit","stack","contact"];
-var links = document.querySelectorAll('.dnav a, .mnav-in a:not(.btn)');
+var links = document.querySelectorAll('.dnav a, .mnav-in a');
 function spy(){
   var current = "";
   var atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
